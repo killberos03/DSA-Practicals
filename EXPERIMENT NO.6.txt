@@ -1,0 +1,90 @@
+EXPERIMENT NO:6
+
+Department of Artificial Intelligence has student's club named ‘SAAI’. Students of Second, third and final year of department can be granted membership on request. Similarly one may cancel the membership of club. First node is reserved for president of club and last node is reserved for secretary of club. Write program to maintain club member‘s information using singly linked list. Store student MIS registration no. and Name. Write functions to a) Add and delete the members as well as president or even secretary. b) Compute total number of members of club c) Display members.
+
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+struct Student {
+    int MIS;
+    char name[50];
+    Student* next;
+};
+
+// Global pointers for president and secretary
+Student *president = nullptr, *secretary = nullptr;
+
+void addMember(int mis, const char name[]) {
+    Student* newMember = new Student;
+    newMember->MIS = mis;
+    strcpy(newMember->name, name);
+    newMember->next = nullptr;
+
+    if (president == nullptr) {
+        president = newMember;
+        secretary = newMember;
+    } else {
+        secretary->next = newMember;
+        secretary = newMember;
+    }
+}
+
+void deleteMember(int mis) {
+    Student* curr = president, *prev = nullptr;
+
+    // Traverse the list to find the member with the given MIS
+    while (curr != nullptr && curr->MIS != mis) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    // If the member is found, delete the node
+    if (curr != nullptr) {
+        if (curr == president) {
+            president = president->next;
+        } else {
+            prev->next = curr->next;
+        }
+        delete curr;
+    }
+}
+
+int countMembers() {
+    int count = 0;
+    Student* curr = president;
+    while (curr != nullptr) {
+        count++;
+        curr = curr->next;
+    }
+    return count;
+}
+
+void displayMembers() {
+    Student* curr = president;
+    while (curr != nullptr) {
+        cout << "MIS: " << curr->MIS << ", Name: " << curr->name << endl;
+        curr = curr->next;
+    }
+}
+
+int main() {
+    // Adding members
+    addMember(1001, "Alice");
+    addMember(1002, "Bob");
+    addMember(1003, "Charlie");
+
+    // Displaying members
+    cout << "Members of SAAI Club:" << endl;
+    displayMembers();
+
+    // Deleting a member
+    deleteMember(1002);
+
+    // Displaying members after deletion
+    cout << "\nAfter deletion:" << endl;
+    displayMembers();
+
+    return 0;
+}

@@ -1,0 +1,60 @@
+EXPERIMENT NO:18
+
+Implement graph using adjacency list or matrix and perform DFS or BFS
+
+CODE:
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Graph {
+    int V; // Number of vertices
+    vector<vector<int>> adjList;
+
+    Graph(int vertices) {
+        V = vertices;
+        adjList.resize(V);
+    }
+
+    void addEdge(int u, int v) {
+        adjList[u].push_back(v);
+        adjList[v].push_back(u); // For undirected graph
+    }
+
+    void DFSUtil(int v, vector<bool>& visited) {
+        visited[v] = true;
+        cout << v << " ";
+
+        for (int i = 0; i < adjList[v].size(); ++i) {
+            int adjacentVertex = adjList[v][i];
+            if (!visited[adjacentVertex]) {
+                DFSUtil(adjacentVertex, visited);
+            }
+        }
+    }
+
+    void DFS(int startVertex) {
+        vector<bool> visited(V, false);
+        cout << "DFS Traversal starting from vertex " << startVertex << ":\n";
+        DFSUtil(startVertex, visited);
+        cout << endl;
+    }
+};
+
+int main() {
+    int vertices = 5; // Number of vertices in the graph
+    Graph g(vertices);
+
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 3);
+    g.addEdge(2, 4);
+    g.addEdge(3, 4);
+
+    int startVertex = 0; // Starting vertex for DFS traversal
+    g.DFS(startVertex);
+
+    return 0;
+}

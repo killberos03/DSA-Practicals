@@ -1,0 +1,72 @@
+EXPERIMENT NO:17
+
+Beginning with an empty binary search tree, Construct binary search tree by inserting the values in the order given. After constructing a binary tree v. Search a value
+
+CODE:
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to insert a new node in the BST
+Node* insert(Node* root, int val) {
+    if (root == nullptr) {
+        return new Node(val);
+    }
+
+    if (val < root->data) {
+        root->left = insert(root->left, val);
+    } else {
+        root->right = insert(root->right, val);
+    }
+
+    return root;
+}
+
+// Function to search for a value in the BST
+bool search(Node* root, int val) {
+    if (root == nullptr) {
+        return false;
+    }
+
+    if (root->data == val) {
+        return true;
+    } else if (val < root->data) {
+        return search(root->left, val);
+    } else {
+        return search(root->right, val);
+    }
+}
+
+int main() {
+    Node* root = nullptr;
+
+    // Values to be inserted to construct the binary search tree
+    int values[] = {50, 30, 70, 20, 40, 60, 80};
+    for (int val : values) {
+        root = insert(root, val);
+    }
+
+    // Value to search in the BST
+    int searchValue = 40;
+
+    // Perform the search operation
+    if (search(root, searchValue)) {
+        cout << "Value " << searchValue << " found in the BST.\n";
+    } else {
+        cout << "Value " << searchValue << " not found in the BST.\n";
+    }
+
+    return 0;
+}
