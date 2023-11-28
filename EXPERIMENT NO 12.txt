@@ -1,0 +1,72 @@
+EXPERIMENT NO: 12
+
+A book consists of chapters, chapters consist of sections and sections consist of subsections. Construct a tree and print the nodes. Find the time and space requirements of your method.
+
+CODE:
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    string label;
+    vector<Node*> children;
+
+    Node(string lbl) {
+        label = lbl;
+    }
+};
+
+void printNodes(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    cout << root->label << endl;
+    for (Node* child : root->children) {
+        printNodes(child);
+    }
+}
+
+int main() {
+    Node* book = new Node("Book");
+
+    Node* chapter1 = new Node("Chapter 1");
+    Node* chapter2 = new Node("Chapter 2");
+
+    Node* section1_1 = new Node("Section 1.1");
+    Node* section1_2 = new Node("Section 1.2");
+    Node* section2_1 = new Node("Section 2.1");
+
+    Node* subsection1_1_1 = new Node("Subsection 1.1.1");
+    Node* subsection1_1_2 = new Node("Subsection 1.1.2");
+    Node* subsection1_2_1 = new Node("Subsection 1.2.1");
+
+    book->children.push_back(chapter1);
+    book->children.push_back(chapter2);
+
+    chapter1->children.push_back(section1_1);
+    chapter1->children.push_back(section1_2);
+    chapter2->children.push_back(section2_1);
+
+    section1_1->children.push_back(subsection1_1_1);
+    section1_1->children.push_back(subsection1_1_2);
+    section1_2->children.push_back(subsection1_2_1);
+
+    // Printing the nodes of the tree
+    cout << "Nodes of the Book Tree:" << endl;
+    printNodes(book);
+
+    // Freeing allocated memory (cleanup)
+    delete book;
+    delete chapter1;
+    delete chapter2;
+    delete section1_1;
+    delete section1_2;
+    delete section2_1;
+    delete subsection1_1_1;
+    delete subsection1_1_2;
+    delete subsection1_2_1;
+
+    return 0;
+}

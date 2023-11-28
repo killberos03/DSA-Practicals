@@ -1,0 +1,135 @@
+EXPERIMENT NO:11
+
+A double-ended queue (deque) is a linear list in which additions and deletions may be made at either end. Obtain a data representation mapping a deque into a one-dimensional array. Write C++ program to simulate deque with functions to add and delete elements from either end of the deque.
+
+CODE:
+
+#include <iostream>
+using namespace std;
+
+const int MAX_SIZE = 100;
+struct Deque {
+    int arr[MAX_SIZE];
+    int front, rear;
+};
+
+void initDeque(Deque &dq) {
+    dq.front = -1;
+    dq.rear = 0;
+}
+
+bool isEmpty(Deque &dq) {
+    return dq.front == -1;
+}
+
+bool isFull(Deque &dq) {
+    return (dq.front == 0 && dq.rear == MAX_SIZE - 1) || dq.front == dq.rear + 1;
+}
+
+void addFront(Deque &dq, int data) {
+    if (isFull(dq)) {
+        cout << "Deque Overflow!" << endl;
+        return;
+    }
+
+    if (dq.front == -1) {
+        dq.front = 0;
+        dq.rear = 0;
+    } else if (dq.front == 0) {
+        dq.front = MAX_SIZE - 1;
+    } else {
+        dq.front--;
+    }
+
+    dq.arr[dq.front] = data;
+    cout << "Element " << data << " added at front." << endl;
+}
+
+void addRear(Deque &dq, int data) {
+    if (isFull(dq)) {
+        cout << "Deque Overflow!" << endl;
+        return;
+    }
+
+    if (dq.front == -1) {
+        dq.front = 0;
+        dq.rear = 0;
+    } else if (dq.rear == MAX_SIZE - 1) {
+        dq.rear = 0;
+    } else {
+        dq.rear++;
+    }
+
+    dq.arr[dq.rear] = data;
+    cout << "Element " << data << " added at rear." << endl;
+}
+
+void deleteFront(Deque &dq) {
+    if (isEmpty(dq)) {
+        cout << "Deque Underflow!" << endl;
+        return;
+    }
+
+    if (dq.front == dq.rear) {
+        dq.front = -1;
+        dq.rear = 0;
+    } else if (dq.front == MAX_SIZE - 1) {
+        dq.front = 0;
+    } else {
+        dq.front++;
+    }
+
+    cout << "Element deleted from front." << endl;
+}
+
+void deleteRear(Deque &dq) {
+    if (isEmpty(dq)) {
+        cout << "Deque Underflow!" << endl;
+        return;
+    }
+
+    if (dq.front == dq.rear) {
+        dq.front = -1;
+        dq.rear = 0;
+    } else if (dq.rear == 0) {
+        dq.rear = MAX_SIZE - 1;
+    } else {
+        dq.rear--;
+    }
+
+    cout << "Element deleted from rear." << endl;
+}
+
+void displayDeque(Deque &dq) {
+    if (isEmpty(dq)) {
+        cout << "Deque is empty." << endl;
+        return;
+    }
+
+    int i = dq.front;
+    cout << "Deque elements: ";
+    while (i != dq.rear) {
+        cout << dq.arr[i] << " ";
+        i = (i + 1) % MAX_SIZE;
+    }
+    cout << dq.arr[dq.rear] << endl;
+}
+
+int main() {
+    Deque dq;
+    initDeque(dq);
+
+    addFront(dq, 10);
+    addRear(dq, 20);
+    addFront(dq, 30);
+
+    displayDeque(dq);
+
+    deleteFront(dq);
+    deleteRear(dq);
+
+    displayDeque(dq);
+
+    return 0;
+}
+

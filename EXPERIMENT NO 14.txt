@@ -1,0 +1,63 @@
+EXPERIMENT NO 14
+
+Beginning with an empty binary search tree, Construct binary search tree by inserting the values in the order given. After constructing a binary tree ii. Find number of nodes in longest path and display.
+
+CODE:
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to insert a new node in the BST
+Node* insert(Node* root, int val) {
+    if (root == nullptr) {
+        return new Node(val);
+    }
+
+    if (val < root->data) {
+        root->left = insert(root->left, val);
+    } else {
+        root->right = insert(root->right, val);
+    }
+
+    return root;
+}
+
+// Function to find the number of nodes in the longest path
+int longestPath(Node* root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    int leftDepth = longestPath(root->left);
+    int rightDepth = longestPath(root->right);
+
+    return 1 + max(leftDepth, rightDepth);
+}
+
+int main() {
+    Node* root = nullptr;
+
+    // Values to be inserted to construct the binary search tree
+    int values[] = {50, 30, 70, 20, 40, 60, 80};
+    for (int val : values) {
+        root = insert(root, val);
+    }
+
+    // Displaying the number of nodes in the longest path
+    int longest = longestPath(root);
+    cout << "Number of nodes in the longest path: " << longest << endl;
+
+    return 0;
+}
